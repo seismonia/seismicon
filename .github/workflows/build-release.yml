@@ -1,0 +1,69 @@
+name: Build Release
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+
+jobs:
+  generate-png:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install SVG to PNG dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libcairo2-dev libfreetype6-dev libffi-dev libjpeg-dev libpng-dev libz-dev
+          pip install cairosvg
+
+      - name: Convert SVGs to practical PNG sizes
+        run: |
+          mkdir -p "png/24" "png/48" "png/96"
+          
+          find . -name "*.svg" -not -path "./.github/*" -not -path "./png/*" | while read svg_file; do
+            fname=$(basename "$svg_file" .svg)
+            relpath=$(dirname "$svg_file" | sed 's|^\./||')
+            
+            # Create output directories preserving structure
+            mkdir -p "png/24/$relpath" "png/48/$relpath" "png/96/$relpath"
+            
+            # Generate all practical sizes
+            cairosvg "$svg_file" -o "png/24/$relpath/$fname.png" -W 24 -H 24
+            cairosvg "$svg_file" -o "png/48/$relpath/$fname.png" -W 48 -H 48
+            cairosvg "$svg_file" -o "png/96/$relpath/$fname.png" -W 96 -H 96
+          done
+
+      - name: Verify PNGs
+        run: |
+          echo "Generated PNG files:"
+          find png -name "*.png" | head -10
+          echo "Total PNG files: $(find png -name "*.png" | wc -l)"
+
+      - name: Create PNG zip archive
+        run: |
+          zip -r "seismicon-png-${{ github.event.release.tag_name }}.zip" png/
+
+      - name: Upload PNG assets to release
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ github.event.release.upload_url }}
+          asset_path: ./seismicon-png-${{ github.event.release.tag_name }}.zip
+          asset_name: seismicon-png-${{ github.event.release.tag_name }}.zip
+          asset_content_type: application/zip
+      - name: Upload PNG assets as workflow artifact
+        if: github.event_name == 'workflow_dispatch'
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.ZIP_NAME }}
+          path: |
+            png/
+            ${{ env.ZIP_NAME }}
