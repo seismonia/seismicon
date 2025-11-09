@@ -1,19 +1,3 @@
----
-# SeismIcon config for GitHub Actions simply as YAML fronmatter :)
-color_palette:
-  orange: "#f47933" 
-  violet: "#9a69ad"
-  red: "#e42f44"
-  blue: "#056ab5"
-  green: "#278a46"
-  yellow: "#ffc220"
-  brown: "#9a734a"
-  dark: "#1a1a1a"
-  light: "#f1f1f1"
-default_sizes: [24, 48, 96]
-version: 0.1.0
----
-
 ## Icons quick reference
 
 ### Plain pointers

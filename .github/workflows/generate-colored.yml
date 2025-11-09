@@ -1,0 +1,77 @@
+name: Generate Color Variants
+
+on:
+  workflow_dispatch:
+  workflow_call:
+
+jobs:
+  generate-colors:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libcairo2-dev libfreetype6-dev libffi-dev libjpeg-dev libpng-dev libz-dev
+          pip install cairosvg
+
+      - name: Generate color variants
+        run: |
+          mkdir -p png-colors
+          
+          # Color definitions - easy to modify!
+          declare -A colors=(
+            ["orange"]="#f47933"
+            ["violet"]="#9a69ad"
+            ["red"]="#e42f44"
+            ["blue"]="#056ab5"
+            ["green"]="#278a46"
+            ["yellow"]="#ffc220"
+            ["brown"]="#9a734a"
+            ["dark"]="#1a1a1a"
+            ["light"]="#f1f1f1"
+          )
+          
+          for color_name in "${!colors[@]}"; do
+            hex_color="${colors[$color_name]}"
+            echo "Processing color: $color_name ($hex_color)"
+            
+            # Convert each SVG with this color
+            find . -name "*.svg" -not -path "./.github/*" -not -path "./png*" | while read svg_file; do
+              filename=$(basename "$svg_file" .svg)
+              relative_path=$(dirname "$svg_file" | sed 's|^\./||')
+              
+              # Get dimensions from SVG
+              width=$(grep -o 'width="[0-9]*"' "$svg_file" | grep -o '[0-9]*' | head -1)
+              height=$(grep -o 'height="[0-9]*"' "$svg_file" | grep -o '[0-9]*' | head -1)
+              
+              # Create colored SVG
+              temp_svg="temp-${color_name}.svg"
+              sed "s/currentColor/${hex_color}/g" "$svg_file" > "$temp_svg"
+              
+              # Create output directory and convert to PNG
+              mkdir -p "png-colors/$relative_path"
+              output_path="png-colors/$relative_path/${filename}.${color_name}.png"
+              cairosvg "$temp_svg" -o "$output_path" -W "$width" -H "$height"
+              
+              # Cleanup temp file
+              rm "$temp_svg"
+              
+              echo "  Converted: $output_path"
+            done
+          done
+          
+          echo "Generated $(find png-colors -name "*.png" | wc -l) PNG files"
+
+      - name: Upload color variants
+        uses: actions/upload-artifact@v4
+        with:
+          name: seismicon-color-variants
+          path: png-colors/
