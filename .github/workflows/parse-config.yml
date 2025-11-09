@@ -34,12 +34,12 @@ jobs:
             yaml_content=$(sed -n '/^---$/,/^---$/p' README.md | sed '1d;$d')
             
             if [[ -n "$yaml_content" ]]; then
-              # Parse color palette to JSON
-              color_palette=$(echo "$yaml_content" | yq -o=json '.color_palette' -)
+              # FIXED: Use yq's compact JSON output
+              color_palette=$(echo "$yaml_content" | yq -o=json '.color_palette' -I=0)
               echo "color-palette=$color_palette" >> $GITHUB_OUTPUT
               
-              # Parse default sizes to JSON
-              default_sizes=$(echo "$yaml_content" | yq -o=json '.default_sizes' -)
+              # FIXED: Same for sizes
+              default_sizes=$(echo "$yaml_content" | yq -o=json '.default_sizes' -I=0)
               echo "default-sizes=$default_sizes" >> $GITHUB_OUTPUT
               
               echo "Successfully parsed YAML config from README"
