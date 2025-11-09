@@ -1,7 +1,9 @@
 ## Icons preview and comments
-+ ![](pointer-cone-down.svg) - a simple pointing down cone marker
-+ ![](station-seismic.svg) - a seismic station
-    + familiar triangle shape with transparency and seismic flavor
+<div align="center" style="background: white; padding: 20px; border-radius: 8px;">
+  <img src="pointer-cone-down.svg" alt="a simple pointing down cone marker" width="24" height="24">
+  <img src="station-seismic.svg" alt="a seismic station - familiar triangle shape with transparency and seismic flavor" width="48" height="48">
+
+</div>
 
 ## Simplest example ![pointer-cone-down.svg](pointer-cone-down.svg) (`pointer-cone-down.svg`) content:
 ```xml
