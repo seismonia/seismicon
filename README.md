@@ -1,7 +1,6 @@
 ## Icons preview and comments
-+ ![](pointer-cone-down.svg) - a simple pointing down cone marker
-+ ![](station-seismic.svg) - a seismic station
-    + familiar triangle shape with transparency and seismic flavor
+![Pointer](png/24/pointer-cone-down.png)
+![Station](png/48/station-seismic.png)
 
 ## Simplest example ![pointer-cone-down.svg](pointer-cone-down.svg) (`pointer-cone-down.svg`) content:
 ```xml
