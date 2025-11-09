@@ -1,6 +1,12 @@
 ## Icons preview and comments
-![Pointer](png/24/pointer-cone-down.png)
-![Station](png/48/station-seismic.png)
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="pointer-cone-down.svg">
+  <img src="pointer-cone-down.svg" alt="Pointer Icon" width="24" height="24" style="background: #f1f1f1; border-radius: 4px;">
+</picture>
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="station-seismic.svg">
+  <img src="station-seismic.svg" alt="Seismic Station" width="48" height="48" style="background: #f1f1f1; border-radius: 8px;">
+</picture>
 
 ## Simplest example ![pointer-cone-down.svg](pointer-cone-down.svg) (`pointer-cone-down.svg`) content:
 ```xml
