@@ -1,0 +1,55 @@
+name: Parse Configuration
+
+on:
+  workflow_dispatch:
+  workflow_call:
+    outputs:
+      color-palette:
+        description: "Color palette JSON"
+        value: ${{ jobs.parse-config.outputs.color-palette }}
+      default-sizes:
+        description: "Default sizes array"  
+        value: ${{ jobs.parse-config.outputs.default-sizes }}
+
+jobs:
+  parse-config:
+    runs-on: ubuntu-latest
+    outputs:
+      color-palette: ${{ steps.parse-yaml.outputs.color-palette }}
+      default-sizes: ${{ steps.parse-yaml.outputs.default-sizes }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install yq (YAML processor)
+        run: |
+          sudo wget -qO /usr/local/bin/yq https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64
+          sudo chmod +x /usr/local/bin/yq
+
+      - name: Extract YAML frontmatter from README
+        id: parse-yaml
+        run: |
+          if [[ -f "README.md" ]]; then
+            # Extract content between --- markers
+            yaml_content=$(sed -n '/^---$/,/^---$/p' README.md | sed '1d;$d')
+            
+            if [[ -n "$yaml_content" ]]; then
+              # Parse color palette to JSON
+              color_palette=$(echo "$yaml_content" | yq -o=json '.color_palette' -)
+              echo "color-palette=$color_palette" >> $GITHUB_OUTPUT
+              
+              # Parse default sizes to JSON
+              default_sizes=$(echo "$yaml_content" | yq -o=json '.default_sizes' -)
+              echo "default-sizes=$default_sizes" >> $GITHUB_OUTPUT
+              
+              echo "Successfully parsed YAML config from README"
+              echo "Colors: $color_palette"
+              echo "Sizes: $default_sizes"
+            else
+              echo "❌ No YAML frontmatter found in README"
+              exit 1
+            fi
+          else
+            echo "❌ README.md not found"
+            exit 1
+          fi
