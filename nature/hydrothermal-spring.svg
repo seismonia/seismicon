@@ -1,0 +1,29 @@
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  width="48"
+  height="48"
+  viewBox="0 0 48 48"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <!-- Base arrow pointing down -->
+  <path
+    style="fill:currentColor"
+    d="m 3.5,33.4 c 0,0 7,4.4 20,4.7 C 37.5,37.5 44.5,33.4 44.5,33.4 L 24,46 Z" />
+  <!-- Circle on top of the arrow makes a cone -->
+  <path
+    style="stroke-width:2.2"
+    d="m 2.5,32 c 0,-2.75 14,-5 21.5,-5 7,0 21.5,2.25 21.5,5 0,2.75 -14,5 -21.5,5 -7,0 -21.5,-2.25 -21.5,-5" />
+  <!-- Four thin wiggle lines symbolizing light steam currents -->
+  <path
+    d="m 12,7 c 5,10 -6,13 0,25" />
+  <path
+    d="m 20,4 c 5,10 -6,16 0,28" />
+  <path
+    d="m 28,4 c 5,10 -6,16 0,28" />
+  <path
+    d="m 36,7 c 5,10 -6,13 0,25" />
+</svg>

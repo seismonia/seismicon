@@ -1,14 +1,35 @@
-## Icons preview and comments
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="pointer-cone-down.svg">
-  <img src="pointer-cone-down.svg" alt="Pointer Icon" width="24" height="24" style="background: #f1f1f1; border-radius: 4px;">
-</picture>
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="station-seismic.svg">
-  <img src="station-seismic.svg" alt="Seismic Station" width="48" height="48" style="background: #f1f1f1; border-radius: 8px;">
-</picture>
+---
+# SeismIcon config for GitHub Actions simply as YAML fronmatter :)
+color_palette:
+  orange: "#f47933" 
+  violet: "#9a69ad"
+  red: "#e42f44"
+  blue: "#056ab5"
+  green: "#278a46"
+  yellow: "#ffc220"
+  brown: "#9a734a"
+  dark: "#1a1a1a"
+  light: "#f1f1f1"
+default_sizes: [24, 48, 96]
+version: 0.1.0
+---
 
-## Simplest example ![pointer-cone-down.svg](pointer-cone-down.svg) (`pointer-cone-down.svg`) content:
+## Icons quick reference
+
+### Plain pointers
+![](plain/arrowhead-cursor.svg)
+![](plain/cone-down.svg)
+
+### Seismic equipment
+![](seismic/receiver.svg)
+![](seismic/station-temporary.svg)
+![](seismic/station-permanent.svg)
+
+### Natural features
+![](nature/hydrothermal-spring.svg)
+
+
+## Simplest example ![](plain/cone-down.svg) (`plain/cone-down.svg`) content:
 ```xml
 <svg
   xmlns="http://www.w3.org/2000/svg"
@@ -62,6 +83,7 @@ Optimization Steps example workflow:
 3. Minify actually used attributes (keep defaults as whole svg attributes)
 4. Verify rendering in image preview
 5. Validate and test in target applications (web, print, etc.)
+
 
 ## Contributing
 Icon contributions are welcomed!
