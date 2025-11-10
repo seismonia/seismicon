@@ -11,7 +11,7 @@
 
 ### Natural features
 ![](nature/hydrothermal-spring.svg)
-
+![](nature/volcano-vent.svg)
 
 ## Simplest example ![](plain/cone-down.svg) (`plain/cone-down.svg`) content:
 ```xml
